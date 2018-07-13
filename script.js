@@ -1,5 +1,7 @@
 var isMobil = /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)
-var time = isMobil ? 10 : 3 //second
+var time = isMobil ? 5 : 3 //second
+var version = '0.1.0'
+
 
 function DrawingCard(arrayLenth, isLoop) {
     this.isLoop = isLoop
@@ -84,10 +86,21 @@ g.append('rect')
         dispatch.call('startDrawing')
     })
 
-g.append('text')
-    .text('Start')
+var text = g.append('text')
     .attr('x', width / 2)
     .attr('y', height / 2)
+    .attr('dy',0);
+
+    text.append('tspan')
+    .text("START")
+    .attr('dy','0')
+    .attr('x',width/2)
+
+
+    text.append('tspan')
+    .text('Version: '+version)
+    .attr('dy','1em')
+    .attr('x',width/2)
 
 
 
@@ -95,7 +108,7 @@ if (isMobil) {
     g.select('rect')
         .style('fill', '#29aba4');
     g.select('text')
-    .style('font-size','20rem')
+    .style('font-size','1rem')
 
 } else {
     g.select('rect')
