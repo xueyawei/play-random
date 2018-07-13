@@ -12,3 +12,9 @@ html,body{
 svg{
     display: block;
 }
+
+text,tspan{
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
