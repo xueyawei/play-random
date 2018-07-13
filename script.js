@@ -1,3 +1,6 @@
+var delay = 50; // ms
+
+
 function DrawingCard(arrayLenth) {
     this.aryLen = arrayLenth;
     var randomArray = new Array(this.aryLen);
@@ -54,7 +57,7 @@ function Color() {
     this.color = 'rgba(' + this.r + ',' + this.g + ',' + this.b + ',0.8)';
 }
 
-var delay = 1;
+
 var elements = []
 svg.selectAll('rect')
     .data(cards.randomArray)
