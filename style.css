@@ -8,6 +8,7 @@ html,body{
 }
 #div{
     width: 100%;
+    position: relative;
 }
 svg{
     display: block;
@@ -17,4 +18,11 @@ text,tspan{
     text-anchor: middle;
     pointer-events: none;
     user-select: none;
+}
+
+input{
+    position: relative;
+    text-align: center;
+    width: 5em;
+    height: 2em;
 }
