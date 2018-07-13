@@ -1,4 +1,4 @@
-var time = 3; //second
+var time = /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent) ? 10:3 //second
 
 function DrawingCard(arrayLenth,isLoop) {
     this.isLoop = isLoop
