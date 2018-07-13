@@ -1,7 +1,7 @@
-var delay = 50; // ms
+var time = 3; //second
 
-
-function DrawingCard(arrayLenth) {
+function DrawingCard(arrayLenth,isLoop) {
+    this.isLoop = isLoop
     this.aryLen = arrayLenth;
     var randomArray = new Array(this.aryLen);
     for (var i = 0; i < randomArray.length; i++) {
@@ -21,11 +21,22 @@ function DrawingCard(arrayLenth) {
 
     this.randomArray = randomArray;
     this.remaining = randomArray.length;
+    this.endFlag = false;
     this.next = function () {
-        var returnNumber = randomArray[--this.remaining];
+        if(!this.endFlag){
+            var returnNumber = randomArray[--this.remaining];
+        }else{
+            var returnNumber = -1;
+        }
+
         if (this.remaining === 0) {
-            shuffle(randomArray);
-            this.remaining = randomArray.length;
+            if(this.isLoop){
+                shuffle(randomArray);
+                this.remaining = randomArray.length;
+            }else{
+                this.endFlag = true
+            }
+            
         }
         return returnNumber;
     }
@@ -44,7 +55,9 @@ var rectSize = 10;
 var wCount = Math.floor(width / rectSize);
 var hCount = Math.floor(height / rectSize);
 var totalRect = wCount * hCount;
-var cards = new DrawingCard(totalRect);
+var cards = new DrawingCard(totalRect,false);
+
+
 
 var colorScale = d3.scaleLinear()
     .domain(d3.extent(cards.randomArray))
@@ -75,13 +88,24 @@ svg.selectAll('rect')
         return new Color().color
     })
     .style('opacity', 0)
-    .each(function(d,i){
+    .each(function (d, i) {
         elements.push(d3.select(this))
     })
 
+var delay = 30;
+var blocksPerDelay = totalRect/time/1000*delay;
+var blocksPerDelayCeil = Math.ceil(blocksPerDelay);
+var loopTimes = Math.ceil(totalRect/blocksPerDelayCeil)
 
-for(var i =0; i<totalRect;i++){
-    setTimeout(function(){
-        elements[cards.next()].style('opacity',1)
-    },i*delay)
+for (var i = 0; i < loopTimes; i++) {
+
+    setTimeout(function (blocks) {
+        for(var i = 0;i<blocks;i++){
+            var cardsNext = cards.next();
+            if(cardsNext!==-1){
+                elements[cardsNext].style('opacity', 1)
+            }
+        }
+        
+    }, i * delay,blocksPerDelayCeil)
 }
