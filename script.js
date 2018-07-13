@@ -72,33 +72,35 @@ function Color() {
 }
 var g = svg.append('g');
 
+var dispatch = d3.dispatch('startDrawing');
+dispatch.on('startDrawing', draw);
+
 g.append('rect')
     .attr('x', 0)
     .attr('y', 0)
     .attr('width', width)
-    .attr('height', height);
+    .attr('height', height)
+    .on('click', function () {
+        dispatch.call('startDrawing')
+    })
 
 g.append('text')
     .text('Start')
     .attr('x', width / 2)
     .attr('y', height / 2)
 
-var dispatch = d3.dispatch('startDrawing');
-dispatch.on('startDrawing', draw);
+
 
 if (isMobil) {
     g.select('rect')
-        .style('fill', '#29aba4')
-        .on('touch', function () {
-            dispatch.call('startDrawing')
-        })
+        .style('fill', '#29aba4');
+    g.select('text')
+    .style('font-size','20rem')
 
 } else {
     g.select('rect')
-        .style('fill', '#354458')
-        .on('click', function () {
-            dispatch.call('startDrawing')
-        })
+        .style('fill', '#354458');
+
 }
 
 
