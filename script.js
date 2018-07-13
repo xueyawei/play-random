@@ -1,7 +1,7 @@
 var isMobil = /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)
 var time = isMobil ? 10 : 3 //second
-var version = '0.1.2';
-var platform = isMobil?'Mobil':'Desktop or Tablet';
+var version = '0.1.3';
+var platform = isMobil ? 'Mobil' : 'Desktop or Tablet';
 
 
 function DrawingCard(arrayLenth, isLoop) {
@@ -84,29 +84,46 @@ g.append('rect')
     .attr('width', width)
     .attr('height', height)
     .on('click', function () {
+        var inputValue = parseInt(d3.select('input').node().value);
+        if(typeof inputValue==='number'&&inputValue>0&&inputValue<=60){
+            window.time = inputValue;
+        }
+        debugger;
         dispatch.call('startDrawing')
     })
 
 var text = g.append('text')
     .attr('x', width / 2)
     .attr('y', height / 2)
-    .attr('dy',0);
+    .attr('dy', 0);
 
-    // text.append('tspan')
-    // .text("START")
-    // .attr('dy','0')
-    // .attr('x',width/2)
+// text.append('tspan')
+// .text("START")
+// .attr('dy','0')
+// .attr('x',width/2)
 
 
-    text.append('tspan')
-    .text('Version: '+version)
-    .attr('dy','0em')
-    .attr('x',width/2)
+text.append('tspan')
+    .text('Version: ' + version)
+    .attr('dy', '0em')
+    .attr('x', width / 2)
 
-    text.append('tspan')
+text.append('tspan')
     .text(platform)
-    .attr('dy','1em')
-    .attr('x',width/2)
+    .attr('dy', '1em')
+    .attr('x', width / 2)
+
+var pos = getAbsoluteXY(d3.select('text').node())
+d3.select('#div')
+    .append('div')
+    .style('position', 'absolute')
+    .style('left', '50%')
+    .style('top', '0')
+    .append('input')
+    .attr('type', 'text')
+    .attr('value', time)
+    .style('top', height / 3 * 2 + 'px')
+    .style('left', '-50%');
 
 
 
@@ -115,23 +132,31 @@ if (isMobil) {
         .style('fill', '#29aba4');
 
     g.selectAll('tspan')
-    .style('font-size','3rem')
+        .style('font-size', '3rem')
 
 } else {
     g.select('rect')
         .style('fill', '#354458');
 
-        g.selectAll('tspan')
-        .style('font-size','3rem')
+    g.selectAll('tspan')
+        .style('font-size', '3rem')
 
+}
+
+function getAbsoluteXY(element) {
+    var viewportElement = document.documentElement;
+    var box = element.getBoundingClientRect();
+    var scrollLeft = viewportElement.scrollLeft;
+    var scrollTop = viewportElement.scrollTop;
+    var x = box.left + scrollLeft;
+    var y = box.top + scrollTop;
+    return { "x": x, "y": y }
 }
 
 
 
-
-
 function draw() {
-    d3.select('text')
+    d3.selectAll('text,input')
         .remove();
     var elements = []
     svg.append('g').selectAll('rect')
@@ -155,7 +180,7 @@ function draw() {
         })
 
     var delay = 30;
-    var blocksPerDelay = totalRect / time / 1000 * delay;
+    var blocksPerDelay = totalRect / window.time / 1000 * delay;
     var blocksPerDelayCeil = Math.ceil(blocksPerDelay);
     var loopTimes = Math.ceil(totalRect / blocksPerDelayCeil)
 
