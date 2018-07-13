@@ -1,6 +1,6 @@
 var isMobil = /Android|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)
-var time = isMobil ? 5 : 3 //second
-var version = '0.1.0'
+var time = isMobil ? 10 : 3 //second
+var version = '0.1.1'
 
 
 function DrawingCard(arrayLenth, isLoop) {
